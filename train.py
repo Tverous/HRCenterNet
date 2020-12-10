@@ -21,7 +21,7 @@ def main(args):
     train_list = csv_preprocess(args, args.train_csv_path)
     print("found", len(train_list), "of images for training")
     train_set = dataset_generator(args, args.train_data_dir, train_list, crop_size, args.crop_ratio, output_size)
-    dataloader['train'] = torch.utils.data.DataLoader(train_set, args.batch_size, shuffle=True)
+    dataloader['train'] = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
     
     if args.val:
         val_list = csv_preprocess(args, args.val_csv_path)
@@ -126,22 +126,22 @@ if __name__ == "__main__":
     parser.add_argument("--log_dir", required=False, default=None,
                       help="Where to load for the pretrained model.")
     
-    parser.add_argument("--epoch", default=80,
+    parser.add_argument("--epoch", type=int, default=80,
                        help="number of epoch")
     
-    parser.add_argument("--lr", default=1e-5,
+    parser.add_argument("--lr", type=float, default=1e-5,
                        help="learning rate")
     
-    parser.add_argument("--batch_size", default=8,
+    parser.add_argument("--batch_size", type=int, default=8,
                        help="number of batch size")
     
-    parser.add_argument("--crop_ratio", default=0.4,
+    parser.add_argument("--crop_ratio", type=float, default=0.4,
                        help="crop ration for random crop in data augumentation")
     
     parser.add_argument('--weight_dir', default='./weigjts/',
                        help="Where to save the weight")
     
-    parser.add_argument('--save_epoch', default=10,
+    parser.add_argument('--save_epoch', type=int, default=10,
                        help="save model weight every number of epoch")
     
 
