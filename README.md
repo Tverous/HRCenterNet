@@ -2,10 +2,11 @@
 
 ![results](https://github.com/Tverous/HRCenterNet/blob/main/images/results.JPG)
 
-### HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents
-Chia-Wei Tang, Chao-Lin Liu, Po-Sen Chu
+#### HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents
+##### IEEE Big Data 2020, CAS Workshop
+##### Chia-Wei Tang, Chao-Lin Liu, Po-Sen Chu
 
-Department of Computer Science, National Chengchi University
+##### Department of Computer Science, National Chengchi University
 
 ## Installation
 ```
