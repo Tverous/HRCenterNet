@@ -1,5 +1,5 @@
 # HRCenterNet (Official Pytorch Implementation)
-
+Chinese Character Detection in Historical Documents
 ![results](https://github.com/Tverous/HRCenterNet/blob/main/images/results.JPG)
 
 #### HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents
