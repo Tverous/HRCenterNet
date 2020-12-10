@@ -1,6 +1,6 @@
 # HRCenterNet (Official Pytorch Implementation)
 
-![alt text](https://github.com/Tverous/HRCenterNet/images/main/results.jpg?raw=true)
+![alt text](https://github.com/Tverous/HRCenterNet/images/main/results.JPG?raw=true)
 
 HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents
 
