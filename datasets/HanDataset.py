@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 
-def dataset_generator(args, data_dir, data_list, crop_size, output_size):
+def dataset_generator(args, data_dir, data_list, crop_size, crop_ratio, output_size):
     
     train_tx = torchvision.transforms.Compose([
         torchvision.transforms.ToTensor(),
@@ -13,7 +13,7 @@ def dataset_generator(args, data_dir, data_list, crop_size, output_size):
 #                               (0.5, 0.5, 0.5)),
       ])
 
-    data_set = HanDataset(data_list, data_dir, args.crop_ratio, crop_size, output_size, transform=train_tx)
+    data_set = HanDataset(data_list, data_dir, crop_ratio, crop_size, output_size, transform=train_tx)
     
     return data_set
     
@@ -36,7 +36,6 @@ class HanDataset(torch.utils.data.Dataset):
     def __getitem__(self,idx):
         
         file_name = self.data_list[idx][0]
-        print(file_name)
         img = Image.open(self.image_path + file_name).convert('RGB')
         
         pic_width, pic_height=img.size

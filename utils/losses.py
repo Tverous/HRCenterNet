@@ -1,10 +1,12 @@
 import torch
 
 def calc_loss(y_pred, y_true, metrics):
-    mask=torch.sign(y_true[...,4])
-    N=torch.sum(mask)
+    
     alpha=2.
     beta=4.
+    
+    mask=torch.sign(y_true[...,4])
+    N=torch.sum(mask)
     
     heatmap_true_rate = torch.flatten(y_true[...,:1])
     heatmap_true = torch.flatten(y_true[...,1:2])
