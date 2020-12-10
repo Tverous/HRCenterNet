@@ -14,5 +14,5 @@ Department of Computer Science, National Chengchi University
 `python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs`
 
 # Todo
-- [] Release training data
-- [] Release pretrained weight
+- [ ] Release training data
+- [ ] Release pretrained weight
