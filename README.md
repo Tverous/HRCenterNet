@@ -20,7 +20,7 @@ cd HRCenterNet/
 ## How to use ?
 - Test with images:
 
-`python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs`
+  `python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs`
 
 ## Todo
 - [ ] Clean training data
