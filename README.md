@@ -7,13 +7,20 @@ Chia-Wei Tang, Chao-Lin Liu, Po-Sen Chu
 
 Department of Computer Science, National Chengchi University
 
+# Installation
+`
+git clone https://github.com/Tverous/HRCenterNet.git
+cd HRCenterNet/
+`
+# Download pretrained weight
+
+[Google Drive](https://drive.google.com/file/d/1EM00B9mh9jb8byEl0vLFtcfF_FdI65SH/view?usp=sharing)
 
 # How to use ?
 
-1) Test with document image:
+1) Test with images:
 
 `python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs`
 
 # Todo
-- [ ] Release training data
-- [ ] Release pretrained weight
+- [ ] Clean training data
