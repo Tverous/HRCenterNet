@@ -21,7 +21,7 @@ def main(args):
     train_list = csv_preprocess(args, args.train_csv_path)
     print("found", len(train_list), "of images for training")
     train_set = dataset_generator(args, args.train_data_dir, train_list, crop_size, args.crop_ratio, output_size)
-    dataloader['train'] = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
+    dataloader['train'] = torch.utils.data.DataLoader(train_set, args.batch_size, shuffle=True)
     
     if args.val:
         val_list = csv_preprocess(args, args.val_csv_path)
@@ -45,8 +45,6 @@ def train(args, dataloader, model):
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
     best_iou = 0.
     
-    avg_iou = evaluate(args, dataloader, model)
-    print('Average IoU: ', avg_iou)
     
     print('Start training...')
     for epoch in range(num_epochs):
