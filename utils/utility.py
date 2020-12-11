@@ -3,6 +3,8 @@ from skimage.draw import rectangle
 import numpy as np
 import torchvision
 import torch
+import matplotlib.pyplot as plt
+import cv2
 
 def csv_preprocess(args, csv):
     
@@ -103,6 +105,7 @@ def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
         bbox.append([top, left, bottom, right])
         
     if len(bbox) == 0:
+        print('No object was found in the image')
         bbox.append([0, 0, 0, 0])
         score_list.append(0)
     _nms_index = torchvision.ops.nms(torch.FloatTensor(bbox), scores=torch.flatten(torch.FloatTensor(score_list)), iou_threshold=iou_threshold)
@@ -112,27 +115,27 @@ def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
     heatmap_gt = gt.data.cpu().numpy()[0, ..., 1]
     offset_y_gt = gt.data.cpu().numpy()[0, ..., 2]
     offset_x_gt = gt.data.cpu().numpy()[0, ..., 3]
-    width_map_gt = gt.data.cpu().numpy()[0, ..., 4]
-    height_map_gt = gt.data.cpu().numpy()[0, ..., 5]
+    height_map_gt = gt.data.cpu().numpy()[0, ..., 4]
+    width_map_gt = gt.data.cpu().numpy()[0, ..., 5]
     
     for j in np.where(heatmap_gt.reshape(-1, 1) == 1)[0]:
 
         row = j // output_size 
         col = j - row*output_size
         
-        bias_x = offset_x[row, col] * (heatmap_gt.shape[0] / output_size)
-        bias_y = offset_y[row, col] * (heatmap_gt.shape[1] / output_size)
+        bias_x = offset_x_gt[row, col]
+        bias_y = offset_y_gt[row, col] 
 
-        width = width_map[row, col] * output_size * (heatmap_gt.shape[0] / output_size)
-        height = height_map[row, col] * output_size * (heatmap_gt.shape[1] / output_size)
+        width = width_map_gt[row, col] * output_size 
+        height = height_map_gt[row, col] * output_size 
 
-        row = row * (heatmap_gt.shape[0] / output_size) + bias_y
-        col = col * (heatmap_gt.shape[1] / output_size) + bias_x
+        row = row + bias_y
+        col = col + bias_x
 
-        top = row - width // 2
-        left = col - height // 2
-        bottom = row + width // 2
-        right = col + height // 2
+        top = row - height // 2
+        left = col - width // 2
+        bottom = row + height // 2
+        right = col + width // 2
 
         start = (top, left)
         end = (bottom, right)
@@ -159,7 +162,7 @@ def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
         rrf, ccf = rectangle(start, end=end, shape=mask_pred.shape)
         
         mask_pred[rrf, ccf] = 1
-    
+        
     for j in range(len(bbox_gt)):
         top, left, bottom, right = bbox_gt[j]
         

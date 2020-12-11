@@ -43,8 +43,7 @@ def train(args, dataloader, model):
     num_epochs = args.epoch
     loss_average = 0.
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
-    best_iou = 0.
-    
+    best_iou = -1.
     
     print('Start training...')
     for epoch in range(num_epochs):
