@@ -3,10 +3,10 @@ Chinese Character Detection in Historical Documents
 ![results](https://github.com/Tverous/HRCenterNet/blob/main/images/results.JPG)
 
 #### HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents https://arxiv.org/abs/2012.05739
-##### IEEE Big Data 2020, CAS Workshop
-##### Chia-Wei Tang, Chao-Lin Liu, Po-Sen Chu
+IEEE Big Data 2020, CAS Workshop
+Chia-Wei Tang, Chao-Lin Liu, Po-Sen Chu
 
-##### Department of Computer Science, National Chengchi University
+Department of Computer Science, National Chengchi University
 
 ## Installation
 ```
