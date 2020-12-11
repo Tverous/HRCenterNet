@@ -23,4 +23,5 @@ cd HRCenterNet/
   `python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs`
 
 ## Todo
+- [ ] Complete README
 - [ ] Clean training data
