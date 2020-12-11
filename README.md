@@ -24,4 +24,4 @@ cd HRCenterNet/
 
 ## Todo
 - [ ] Complete README
-- [ ] Clean training data
+- [ ] Release training data and make training code more readable
