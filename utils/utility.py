@@ -6,7 +6,7 @@ import torch
 import matplotlib.pyplot as plt
 import cv2
 
-def csv_preprocess(args, csv):
+def csv_preprocess(csv):
     
     df = pd.read_csv(csv)
     label_list = list()
@@ -67,8 +67,19 @@ def calc_iou(bbox_pred, _nms_index, val_list, dindex, imshape):
     
     return iou
 
-def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
+def _nms_eval_iou(gt, predict, output_size, nms_score, iou_threshold):
     
+    
+    mask_pred = get_pred_mask(predict, output_size, nms_score, iou_threshold)
+    mask_gt = get_gt_mask(gt, output_size)
+    
+    
+    intersection = np.multiply(mask_pred, mask_gt).sum()
+    iou = intersection / (mask_pred.sum() + mask_gt.sum() - intersection)
+        
+    return iou
+
+def get_pred_mask(predict, output_size, nms_score, iou_threshold):
     bbox = list()
     score_list = list()
     
@@ -108,8 +119,29 @@ def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
         print('No object was found in the image')
         bbox.append([0, 0, 0, 0])
         score_list.append(0)
+        
     _nms_index = torchvision.ops.nms(torch.FloatTensor(bbox), scores=torch.flatten(torch.FloatTensor(score_list)), iou_threshold=iou_threshold)
     
+    mask_pred = np.zeros(heatmap.shape)
+    for i in range(len(_nms_index)):
+    
+        top, left, bottom, right = bbox[_nms_index[i]]
+        
+        top = int(top)
+        left= int(left)
+        bottom = int(bottom)
+        right = int(right)
+        
+        start = (top, left)
+        end = (bottom, right)
+        
+        rrf, ccf = rectangle(start, end=end, shape=mask_pred.shape)
+        
+        mask_pred[rrf, ccf] = 1
+        
+    return mask_pred
+
+def get_gt_mask(gt, output_size):
     bbox_gt = list()
     
     heatmap_gt = gt.data.cpu().numpy()[0, ..., 1]
@@ -141,27 +173,8 @@ def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
         end = (bottom, right)
         
         bbox_gt.append([top, left, bottom, right])
-        
-    ### IoU calculation ###
     
-    mask_pred = np.zeros(heatmap.shape)
     mask_gt = np.zeros(heatmap_gt.shape)
-    
-    for i in range(len(_nms_index)):
-    
-        top, left, bottom, right = bbox[_nms_index[i]]
-        
-        top = int(top)
-        left= int(left)
-        bottom = int(bottom)
-        right = int(right)
-        
-        start = (top, left)
-        end = (bottom, right)
-        
-        rrf, ccf = rectangle(start, end=end, shape=mask_pred.shape)
-        
-        mask_pred[rrf, ccf] = 1
         
     for j in range(len(bbox_gt)):
         top, left, bottom, right = bbox_gt[j]
@@ -177,8 +190,5 @@ def _nms_eval_iou(args, gt, predict, output_size, nms_score, iou_threshold):
         rrf, ccf = rectangle(start, end=end, shape=mask_gt.shape)
         
         mask_gt[rrf, ccf] = 1
-    
-    intersection = np.multiply(mask_pred, mask_gt).sum()
-    iou = intersection / (mask_pred.sum() + mask_gt.sum() - intersection)
         
-    return iou
+    return mask_gt

@@ -15,8 +15,6 @@ def calc_loss(y_pred, y_true, metrics):
     heatloss= torch.sum(heatmap_true*((1-heatmap_pred)**alpha)*torch.log(heatmap_pred+1e-9)+(1-heatmap_true)*((1-heatmap_true_rate)**beta)*(heatmap_pred**alpha)*torch.log(1-heatmap_pred+1e-9))
     offsetloss = torch.sum(torch.abs(y_true[...,2]-y_pred[:,1,...]*mask)+torch.abs(y_true[...,3]-y_pred[:,2, ...]*mask))
     sizeloss = torch.sum(torch.abs(y_true[...,4]-y_pred[:,3, ...]*mask)+torch.abs(y_true[...,5]-y_pred[:,4,...]*mask))
-
-    
     
     all_loss=(-1*heatloss+5.*sizeloss+5.*offsetloss)/N
     metrics['loss'] = all_loss.data.cpu().numpy() 
