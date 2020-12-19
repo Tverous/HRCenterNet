@@ -27,20 +27,20 @@ def heatmap_loss(pred, gt, mask, metrics):
     heatmap_gt = torch.flatten(gt[...,1:2])
     heatmap_pred = torch.flatten(pred[:,:1,...])
     
-    heatloss = torch.sum(heatmap_gt*((1-heatmap_pred)**alpha)*torch.log(heatmap_pred+1e-9) + 
-              (1-heatmap_gt)*((1-heatmap_gt_rate)**beta)*(heatmap_pred**alpha)*torch.log(1-heatmap_pred+1e-9))
+    heatloss = torch.sum(heatmap_gt * ((1 - heatmap_pred) ** alpha) * torch.log(heatmap_pred + 1e-9) + 
+              (1 - heatmap_gt) * ((1 - heatmap_gt_rate) ** beta) * (heatmap_pred ** alpha) * torch.log(1 - heatmap_pred + 1e-9))
     
     return heatloss
 
 def offset_loss(pred, gt, mask, metrics):
     
-    offsetloss = torch.sum(torch.abs(gt[...,2]-pred[:,1,...]*mask)+torch.abs(gt[...,3]-pred[:,2, ...]*mask))
+    offsetloss = torch.sum(torch.abs(gt[...,2] - pred[:,1,...]*mask) + torch.abs(gt[...,3] - pred[:,2, ...] * mask))
     
     return offsetloss
 
 def size_loss(pred, gt, mask, metrics):
     
-    sizeloss = torch.sum(torch.abs(gt[...,4]-pred[:,3, ...]*mask)+torch.abs(gt[...,5]-pred[:,4,...]*mask))
+    sizeloss = torch.sum(torch.abs(gt[...,4] - pred[:,3, ...]*mask) + torch.abs(gt[...,5] - pred[:,4,...] * mask))
     
     return sizeloss
 

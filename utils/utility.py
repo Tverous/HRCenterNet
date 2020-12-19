@@ -5,6 +5,7 @@ import torchvision
 import torch
 import matplotlib.pyplot as plt
 import cv2
+from PIL import Image
 
 def csv_preprocess(csv):
     
