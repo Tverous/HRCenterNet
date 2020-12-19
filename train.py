@@ -38,7 +38,6 @@ def main(args):
     
     train(args, dataloader, model)
     
-    
 def train(args, dataloader, model):
     
     num_epochs = args.epoch
