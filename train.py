@@ -20,13 +20,13 @@ def main(args):
     
     train_list = csv_preprocess(args.train_csv_path)
     print("found", len(train_list), "of images for training")
-    train_set = dataset_generator(args.train_data_dir, train_list, crop_size, args.crop_ratio, output_size)
+    train_set = dataset_generator(args.train_data_dir, train_list, crop_size, args.crop_ratio, output_size, train=True)
     dataloader['train'] = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
     
     if args.val:
         val_list = csv_preprocess(args.val_csv_path)
         print("found", len(val_list), "of images for validation")
-        val_set = dataset_generator(args.val_data_dir, val_list, crop_size, 0, output_size)
+        val_set = dataset_generator(args.val_data_dir, val_list, crop_size, 0, output_size, train=False)
         dataloader['val'] = torch.utils.data.DataLoader(val_set, batch_size=1, shuffle=False)
     
     if not (args.log_dir == None):
@@ -38,13 +38,14 @@ def main(args):
     
     train(args, dataloader, model)
     
+    
 def train(args, dataloader, model):
     
     num_epochs = args.epoch
     loss_average = 0.
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
     best_iou = -1.
-    avg_iou = evaluate(dataloader, model)
+    
     print('Start training...')
     for epoch in range(num_epochs):
         loss = 0.
@@ -97,8 +98,9 @@ def evaluate(dataloader, model):
             inputs = sample['image'].to(device, dtype=torch.float)
             labels = sample['labels'].to(device, dtype=torch.float)
             outputs = model(inputs)
+            img_width, img_height = sample['img_size']
+            iou = _nms_eval_iou(labels, outputs, img_width.item(), img_height.item(), output_size, nms_score=0.3, iou_threshold=0.1)
             
-            iou = _nms_eval_iou(labels, outputs, output_size, nms_score=0.3, iou_threshold=0.1)
             iou_sum = iou_sum + iou
             
     return iou_sum / len(dataloader['val'].dataset)

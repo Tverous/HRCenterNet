@@ -3,9 +3,6 @@ from skimage.draw import rectangle
 import numpy as np
 import torchvision
 import torch
-import matplotlib.pyplot as plt
-import cv2
-from PIL import Image
 
 def csv_preprocess(csv):
     
@@ -68,19 +65,18 @@ def calc_iou(bbox_pred, _nms_index, val_list, dindex, imshape):
     
     return iou
 
-def _nms_eval_iou(gt, predict, output_size, nms_score, iou_threshold):
+def _nms_eval_iou(gt, predict, img_width, img_height, output_size, nms_score, iou_threshold):
     
     
-    mask_pred = get_pred_mask(predict, output_size, nms_score, iou_threshold)
-    mask_gt = get_gt_mask(gt, output_size)
-    
+    mask_pred = get_pred_mask(predict, img_width, img_height, output_size, nms_score, iou_threshold)
+    mask_gt = get_gt_mask(gt, img_width, img_height, output_size)
     
     intersection = np.multiply(mask_pred, mask_gt).sum()
     iou = intersection / (mask_pred.sum() + mask_gt.sum() - intersection)
         
     return iou
 
-def get_pred_mask(predict, output_size, nms_score, iou_threshold):
+def get_pred_mask(predict, img_width, img_height, output_size, nms_score, iou_threshold):
     bbox = list()
     score_list = list()
     
@@ -95,16 +91,16 @@ def get_pred_mask(predict, output_size, nms_score, iou_threshold):
         row = i // output_size 
         col = i - row*output_size
         
-        bias_x = offset_x[row, col] * (heatmap.shape[1] / output_size)
-        bias_y = offset_y[row, col] * (heatmap.shape[0] / output_size)
+        bias_x = offset_x[row, col] * (img_height / output_size)
+        bias_y = offset_y[row, col] * (img_width / output_size)
 
-        width = width_map[row, col] * output_size * (heatmap.shape[1] / output_size)
-        height = height_map[row, col] * output_size * (heatmap.shape[0] / output_size)
+        width = width_map[row, col] * output_size * (img_height / output_size)
+        height = height_map[row, col] * output_size * (img_width / output_size)
 
         score_list.append(heatmap[row, col])
 
-        row = row * (heatmap.shape[1] / output_size) + bias_y
-        col = col * (heatmap.shape[0] / output_size) + bias_x
+        row = row * (img_height / output_size) + bias_y
+        col = col * (img_width / output_size) + bias_x
 
         top = row - width // 2
         left = col - height // 2
@@ -123,7 +119,7 @@ def get_pred_mask(predict, output_size, nms_score, iou_threshold):
         
     _nms_index = torchvision.ops.nms(torch.FloatTensor(bbox), scores=torch.flatten(torch.FloatTensor(score_list)), iou_threshold=iou_threshold)
     
-    mask_pred = np.zeros(heatmap.shape)
+    mask_pred = np.zeros((img_height, img_width))
     for i in range(len(_nms_index)):
     
         top, left, bottom, right = bbox[_nms_index[i]]
@@ -139,43 +135,43 @@ def get_pred_mask(predict, output_size, nms_score, iou_threshold):
         rrf, ccf = rectangle(start, end=end, shape=mask_pred.shape)
         
         mask_pred[rrf, ccf] = 1
-        
+    
     return mask_pred
 
-def get_gt_mask(gt, output_size):
+def get_gt_mask(gt, img_width, img_height, output_size):
     bbox_gt = list()
     
     heatmap_gt = gt.data.cpu().numpy()[0, ..., 1]
     offset_y_gt = gt.data.cpu().numpy()[0, ..., 2]
     offset_x_gt = gt.data.cpu().numpy()[0, ..., 3]
-    height_map_gt = gt.data.cpu().numpy()[0, ..., 4]
-    width_map_gt = gt.data.cpu().numpy()[0, ..., 5]
+    width_map_gt = gt.data.cpu().numpy()[0, ..., 4]
+    height_map_gt = gt.data.cpu().numpy()[0, ..., 5]
     
     for j in np.where(heatmap_gt.reshape(-1, 1) == 1)[0]:
 
         row = j // output_size 
         col = j - row*output_size
         
-        bias_x = offset_x_gt[row, col]
-        bias_y = offset_y_gt[row, col] 
+        bias_x_gt = offset_x_gt[row, col] * (img_height / output_size)
+        bias_y_gt = offset_y_gt[row, col] * (img_width / output_size)
 
-        width = width_map_gt[row, col] * output_size 
-        height = height_map_gt[row, col] * output_size 
+        width = width_map_gt[row, col] * output_size * (img_height / output_size)
+        height = height_map_gt[row, col] * output_size * (img_width / output_size)
 
-        row = row + bias_y
-        col = col + bias_x
+        row = row * (img_height / output_size) + bias_y_gt
+        col = col * (img_width / output_size) + bias_x_gt
 
-        top = row - height // 2
-        left = col - width // 2
-        bottom = row + height // 2
-        right = col + width // 2
+        top = row - width // 2
+        left = col - height // 2
+        bottom = row + width // 2
+        right = col + height // 2
 
         start = (top, left)
         end = (bottom, right)
-        
+
         bbox_gt.append([top, left, bottom, right])
     
-    mask_gt = np.zeros(heatmap_gt.shape)
+    mask_gt = np.zeros((img_height, img_width))
         
     for j in range(len(bbox_gt)):
         top, left, bottom, right = bbox_gt[j]
