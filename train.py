@@ -2,6 +2,7 @@ import argparse
 import torch
 import sys
 from tqdm import tqdm
+import os
 
 from datasets.HanDataset import dataset_generator
 from utils.utility import csv_preprocess, _nms_eval_iou
@@ -35,6 +36,9 @@ def main(args):
     model = HRCenterNet(args)
     model = model.to(device)
     model.train()
+    
+    if not os.path.exists(args.weight_dir):
+        os.makedirs(args.weight_dir)
     
     train(args, dataloader, model)
     
