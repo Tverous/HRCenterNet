@@ -12,7 +12,7 @@ Chia-Wei Tang, [Chao-Lin Liu](https://www.cs.nccu.edu.tw/~chaolin/), Po-Sen Chu
 ```
 git clone https://github.com/Tverous/HRCenterNet.git
 cd HRCenterNet/
-pip install -r requirtments.txt
+pip install -r requirements.txt
 ```
 ## Download pretrained weight
 
