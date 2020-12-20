@@ -1,7 +1,7 @@
 import torch
 import torchvision
 import numpy as np
-
+from PIL import Image
 
 def dataset_generator(data_dir, data_list, crop_size, crop_ratio, output_size, train=False):
     

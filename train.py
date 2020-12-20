@@ -60,7 +60,7 @@ def train(args, dataloader, model):
 
             loss_average = loss_average + loss
             sys.stdout.write('\r')
-            sys.stdout.write('Epoch [%3d/%3d] Iter[%3d/%3d]\tLoss: %.4f heatmap_loss: %.5f size_loss: %.5f offset_loss: %.5f'
+            sys.stdout.write('Epoch [%3d/%3d] Iter[%3d/%3d]  Loss: %.4f heatmap_loss: %.5f size_loss: %.5f offset_loss: %.5f'
             %(epoch+1, num_epochs, batch_idx, (len(dataloader['train'].dataset)//(args.batch_size))+1, 
               loss.item(), metrics['heatmap'], metrics['size'], metrics['offset']))
             sys.stdout.write(' average loss: %.5f'%(loss_average / (((len(dataloader['train'].dataset)//(args.batch_size))+1)*epoch + (batch_idx + 1))))
