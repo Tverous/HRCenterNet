@@ -14,7 +14,6 @@ Contact: [106703054@g.nccu.edu.tw](mailto:106703054@g.nccu.edu.tw). Any question
 git clone https://github.com/Tverous/HRCenterNet.git
 cd HRCenterNet/
 pip install -r requirements.txt
-mkdir weights
 ```
 ## Download pretrained weight
 
