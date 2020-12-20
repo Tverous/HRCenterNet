@@ -34,14 +34,14 @@ scikit_image == 0.15.0
 # hrcenternet/train.py: 2
 # hrcenternet/utils/losses.py: 1
 # hrcenternet/utils/utility.py: 5
-torch == 1.7.0a0+8deb4fe
+torch == 1.7.0
 
 # hrcenternet/datasets/HanDataset.py: 2
 # hrcenternet/demo_dataset.ipynb: 4
 # hrcenternet/evaluate.py: 4,5
 # hrcenternet/test.py: 4,5
 # hrcenternet/utils/utility.py: 4
-torchvision == 0.8.0a0
+torchvision == 0.8.0
 
 # hrcenternet/train.py: 4
 tqdm == 4.31.1

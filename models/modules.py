@@ -1,6 +1,4 @@
-import torch
 from torch import nn
-
 
 class Bottleneck(nn.Module):
     expansion = 4
