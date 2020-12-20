@@ -2,11 +2,12 @@
 Chinese Character Detection in Historical Documents
 ![results](https://github.com/Tverous/HRCenterNet/blob/main/images/results.JPG)
 
-[HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents](https://arxiv.org/abs/2012.05739)
+>[HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents](https://arxiv.org/abs/2012.05739) \
+>Chia-Wei Tang, [Chao-Lin Liu](https://www.cs.nccu.edu.tw/~chaolin/), Po-Sen Chu \
+>[IEEE Big Data 2020 Workshops, Computational Archival Science: digital records in the age of big data](https://ai-collaboratory.net/cas/cas-workshops/ieee-big-data-2020-5th-cas-workshop/) \
+> *arXiv technical report ([arXiv 2012.05739](https://arxiv.org/abs/2012.05739))*
 
-Chia-Wei Tang, [Chao-Lin Liu](https://www.cs.nccu.edu.tw/~chaolin/), Po-Sen Chu
-
-[IEEE Big Data 2020 Workshops, Computational Archival Science: digital records in the age of big data](https://ai-collaboratory.net/cas/cas-workshops/ieee-big-data-2020-5th-cas-workshop/)
+Contact: [106703054@g.nccu.edu.tw](mailto:106703054@g.nccu.edu.tw). Any questions or discussions are welcomed! 
 
 ## Installation
 ```
