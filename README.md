@@ -4,7 +4,7 @@ Chinese Character Detection in Historical Documents
 
 [HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents](https://arxiv.org/abs/2012.05739)
 
-Chia-Wei Tang, Chao-Lin Liu, Po-Sen Chu
+Chia-Wei Tang, [Chao-Lin Liu](https://www.cs.nccu.edu.tw/~chaolin/), Po-Sen Chu
 
 [IEEE Big Data 2020 Workshops, Computational Archival Science: digital records in the age of big data](https://ai-collaboratory.net/cas/cas-workshops/ieee-big-data-2020-5th-cas-workshop/)
 
