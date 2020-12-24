@@ -86,7 +86,8 @@ def train(args, dataloader, model):
         if epoch % args.save_epoch == 0:
             print('Saving model to', args.weight_dir, str(epoch), '.pth')
             torch.save(model.state_dict(), args.weight_dir + str(epoch) +'.pth')
-    
+        
+        model = mode.train()
                     
 
 def evaluate(dataloader, model):
