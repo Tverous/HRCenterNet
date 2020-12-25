@@ -28,17 +28,17 @@ pip install -r requirements.txt
 [Google Drive - dataset_images.zip](https://drive.google.com/file/d/1syj7Osi0ACqbuuhkoZsuOWXW7Gtjov05/view?usp=sharing)
 
 ## How to use ?
-### - Training:
+### Training:
   ```
   python train.py --train_csv_path data/train.csv --train_data_dir data/images \
                   --val_csv_path data/val.csv --val_data_dir data/images/ --val \
                   --batch_size 8 --epoch 80
   ```
-### - Evaluation:
+### Evaluation:
   ```
   python evaluate.py --csv_path data/val.csv --data_dir data/images/ --log_dir weights/HRCenterNet.pth.tar
   ```
-### - Test with unseen images:
+### Test with unseen images:
   ```
   python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs
   ```
