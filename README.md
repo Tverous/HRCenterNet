@@ -61,7 +61,7 @@ file_name_2           obj_id_1 topleft_x topleft_y width height obj_id_2 topleft
 
 ## Citation
 Use this bibtex to cite this repository:
-```
+```bibtex
 @misc{2012.05739,
   Author = {Chia-Wei Tang, Chao-Lin Liu and Po-Sen Chiu},
   Title = {HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents},
