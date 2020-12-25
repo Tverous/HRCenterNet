@@ -24,13 +24,15 @@ print('divece: ', device)
 
 def main(args):
     
-    val_list = csv_preprocess(args, args.csv_path)
+    val_list = csv_preprocess(args.csv_path)
     print("found", len(val_list), "of images")
     
-    if not args.log_dir == None:
-        print("Load HRCenterNet from " + args.log_dir)
-    
-    model = HRCenterNet(args)
+    if not (args.log_dir == None):
+        print("Load checkpoint from " + args.log_dir)
+        checkpoint = torch.load(args.log_dir, map_location="cpu")    
+
+    model = HRCenterNet()
+    model.load_state_dict(checkpoint['model'])
     model = model.to(device)
     model.eval()
     
@@ -87,6 +89,11 @@ def _nms(args, img, predict, val_list, dindex, nms_score, iou_threshold):
         end = (bottom, right)
 
         bbox.append([top, left, bottom, right])
+    
+    if len(bbox) == 0:
+        print('No object was found in the image')
+        bbox.append([0, 0, 0, 0])
+        score_list.append(0)
         
     _nms_index = torchvision.ops.nms(torch.FloatTensor(bbox), scores=torch.flatten(torch.FloatTensor(score_list)), iou_threshold=iou_threshold)
     
@@ -121,8 +128,6 @@ def _nms(args, img, predict, val_list, dindex, nms_score, iou_threshold):
         Image.fromarray(im_draw).save(args.output_dir + val_list[dindex][0])
         
     iou = calc_iou(bbox, _nms_index, val_list, dindex, imshape=(img.size[1], img.size[0]))
-    if iou < 0.3:
-        print('IoU: ', iou)
         
     return iou
 

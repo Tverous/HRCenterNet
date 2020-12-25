@@ -53,8 +53,8 @@ def calc_iou(bbox_pred, _nms_index, val_list, dindex, imshape):
         bottom = y + height // 2
         right = x + width // 2
             
-        start = (int(top), int(left))
-        end = (int(bottom), int(right))
+        start = (top, left)
+        end = (bottom, right)
             
         rrf, ccf = rectangle(start, end=end, shape=mask_gt.shape)
             

@@ -3,3 +3,5 @@ weights/*
 *pycache*
 
 *.ipynb_checkpoints*
+
+*.pth.tar*

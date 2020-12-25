@@ -23,8 +23,12 @@ print('divece: ', device)
 
 def main(args):
     
-    model = HRCenterNet(args)
-    print("Load HRCenterNet from " + args.log_dir)
+    if not (args.log_dir == None):
+        print("Load checkpoint from " + args.log_dir)
+        checkpoint = torch.load(args.log_dir, map_location="cpu")    
+    
+    model = HRCenterNet()
+    model.load_state_dict(checkpoint['model'])
     model = model.to(device)
     model.eval()
     

@@ -194,11 +194,8 @@ class _HRCenterNet(nn.Module):
 
         return x
 
-def HRCenterNet(args):
+def HRCenterNet():
     
     model = _HRCenterNet(32, 5, 0.1)
-    
-    if not (args.log_dir == None):
-        model.load_state_dict(torch.load(args.log_dir))
     
     return model

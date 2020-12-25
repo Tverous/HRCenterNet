@@ -30,30 +30,40 @@ def main(args):
         val_set = dataset_generator(args.val_data_dir, val_list, crop_size, 0, output_size, train=False)
         dataloader['val'] = torch.utils.data.DataLoader(val_set, batch_size=1, shuffle=False)
     
+    checkpoint = None
     if not (args.log_dir == None):
-        print("Load HRCenterNet from " + args.log_dir)
-    
-    model = HRCenterNet(args)
-    model = model.to(device)
-    model.train()
+        print("Load checkpoint from " + args.log_dir)
+        checkpoint = torch.load(args.log_dir, map_location='cpu')    
+
+    model = HRCenterNet()
     
     if not os.path.exists(args.weight_dir):
         os.makedirs(args.weight_dir)
     
-    train(args, dataloader, model)
+    train(args, dataloader, model, checkpoint)
     
-def train(args, dataloader, model):
+def train(args, dataloader, model, checkpoint=None):
     
     num_epochs = args.epoch
     loss_average = 0.
-    optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
     best_iou = -1.
+    metrics = dict()
     
+    model = model.to(device)
+    optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
+
+    if not (checkpoint == None):
+        model.load_state_dict(checkpoint['model'])
+        optimizer.load_state_dict(checkpoint['optimizer'])
+        best_iou = checkpoint['best_iou']
+
+    optimizer.zero_grad()
+
     print('Start training...')
     for epoch in range(num_epochs):
         loss = 0.
-        metrics = {}
-        
+        model = model.train()
+
         for batch_idx, sample in enumerate(dataloader['train']):
             inputs = sample['image'].to(device, dtype=torch.float)
             labels = sample['labels'].to(device, dtype=torch.float)
@@ -80,14 +90,19 @@ def train(args, dataloader, model):
         if avg_iou > best_iou:
             print('IoU improve from', best_iou, 'to', avg_iou)
             best_iou = avg_iou
-            print('Saving model to', args.weight_dir, 'best.pth')
-            torch.save(model.state_dict(), args.weight_dir + 'best.pth')
+            print('Saving model to', args.weight_dir, 'best.pth.tar')
+            torch.save({'best_iou': best_iou, 
+                        'model': model.state_dict(),
+                        'optimizer': optimizer.state_dict()},
+                        args.weight_dir + 'best.pth.tar')
             
-        if epoch % args.save_epoch == 0:
-            print('Saving model to', args.weight_dir, str(epoch), '.pth')
-            torch.save(model.state_dict(), args.weight_dir + str(epoch) +'.pth')
+        if (epoch % args.save_epoch) == 0:
+            print('Saving model to', args.weight_dir, str(epoch), '.pth.tar')
+            torch.save({'best_iou': best_iou, 
+                        'model': model.state_dict(),
+                        'optimizer': optimizer.state_dict()},
+                        args.weight_dir + str(epoch) +'.pth.tar')
         
-        model = mode.train()
                     
 
 def evaluate(dataloader, model):
