@@ -38,7 +38,7 @@ pip install -r requirements.txt
   ```
   python evaluate.py --csv_path data/val.csv --data_dir data/images/ --log_dir weights/hrcenternet.pth.tar
   ```
-- Testing:
+- Test with unseen images:
   ```
   python test.py --data_dir /path/to/images --log_dir /path/to/pretrained --output_dir /path/to/save/outputs
   ```
