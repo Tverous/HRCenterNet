@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ```
 ## Download pretrained weight
 
-[Google Drive - best.pth.tar](https://drive.google.com/file/d/1pWOZ0M5suplCZeFBJK0SvC34IUtEkOpI/view?usp=sharing)
+[Google Drive - HRCenterNet.pth.tar](https://drive.google.com/file/d/1pWOZ0M5suplCZeFBJK0SvC34IUtEkOpI/view?usp=sharing)
 
 ## Download Dataset
 
@@ -36,7 +36,7 @@ pip install -r requirements.txt
   ```
 - Evaluation:
   ```
-  python evaluate.py --csv_path data/val.csv --data_dir data/images/ --log_dir weights/hrcenternet.pth.tar
+  python evaluate.py --csv_path data/val.csv --data_dir data/images/ --log_dir weights/HRCenterNet.pth.tar
   ```
 - Test with unseen images:
   ```
