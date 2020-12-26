@@ -82,18 +82,19 @@ def train(args, dataloader, checkpoint=None):
 
             optimizer.step()
             optimizer.zero_grad()
-    
-        print()
-        avg_iou = evaluate(dataloader, model)
-        print('Average IoU: ', avg_iou)
-        if avg_iou > best_iou:
-            print('IoU improve from', best_iou, 'to', avg_iou)
-            best_iou = avg_iou
-            print('Saving model to', args.weight_dir, 'best.pth.tar')
-            torch.save({'best_iou': best_iou, 
-                        'optimizer': optimizer.state_dict(),
-                        'model': model.state_dict()},
-                        args.weight_dir + 'best.pth.tar')
+
+        if args.val: 
+            print()
+            avg_iou = evaluate(dataloader, model)
+            print('Average IoU: ', avg_iou)
+            if avg_iou > best_iou:
+                print('IoU improve from', best_iou, 'to', avg_iou)
+                best_iou = avg_iou
+                print('Saving model to', args.weight_dir, 'best.pth.tar')
+                torch.save({'best_iou': best_iou, 
+                            'optimizer': optimizer.state_dict(),
+                            'model': model.state_dict()},
+                            args.weight_dir + 'best.pth.tar')
             
         if (epoch % args.save_epoch) == 0:
             print('Saving model to', args.weight_dir, str(epoch), '.pth.tar')
