@@ -83,8 +83,8 @@ def train(args, dataloader, checkpoint=None):
             optimizer.step()
             optimizer.zero_grad()
 
+        print()
         if args.val: 
-            print()
             avg_iou = evaluate(dataloader, model)
             print('Average IoU: ', avg_iou)
             if avg_iou > best_iou:
