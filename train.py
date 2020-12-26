@@ -97,7 +97,7 @@ def train(args, dataloader, checkpoint=None):
                             args.weight_dir + 'best.pth.tar')
             
         if (epoch % args.save_epoch) == 0:
-            print('Saving model to', args.weight_dir, str(epoch), '.pth.tar')
+            print('Saving model to {}{}.pth.tar'.format(args.weight_dir, str(epoch)))
             torch.save({'best_iou': best_iou, 
                         'optimizer': optimizer.state_dict(),
                         'model': model.state_dict()},
