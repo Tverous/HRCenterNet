@@ -29,7 +29,7 @@ def main(args):
     
     if not (args.log_dir == None):
         print("Load checkpoint from " + args.log_dir)
-        checkpoint = torch.load(args.log_dir, map_location="cpu")    
+        checkpoint = torch.load(args.log_dir, map_location=device)    
 
     model = HRCenterNet()
     model.load_state_dict(checkpoint['model'])
@@ -48,8 +48,11 @@ def main(args):
         inp = inp.to(device, dtype=torch.float)
         predict = model(inp)
         
-        iou_sum = iou_sum + _nms(args, img, predict, val_list, i, nms_score=0.3, iou_threshold=0.1)
-        
+        iou = _nms(args, img, predict, val_list, i, nms_score=0.3, iou_threshold=0.1)
+        print('IoU: ', iou)
+
+        iou_sum = iou_sum + iou
+
     print('Average IoU: ', iou_sum / len(val_list))
     
 def _nms(args, img, predict, val_list, dindex, nms_score, iou_threshold):

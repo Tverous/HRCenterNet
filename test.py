@@ -32,6 +32,9 @@ def main(args):
     model = model.to(device)
     model.eval()
     
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
+    
     for file in os.listdir(args.data_dir):
         img = Image.open(args.data_dir + file).convert("RGB")
     
