@@ -4,7 +4,7 @@
 # HRCenterNet/demo_dataset.ipynb: 5
 # HRCenterNet/evaluate.py: 7
 # HRCenterNet/test.py: 7
-Pillow_SIMD == 5.3.0.post1
+Pillow >= 7.0.0
 
 # HRCenterNet/demo_dataset.ipynb: 2
 matplotlib == 3.3.1
