@@ -35,14 +35,14 @@ scikit_image == 0.15.0
 # HRCenterNet/train.py: 2
 # HRCenterNet/utils/losses.py: 1
 # HRCenterNet/utils/utility.py: 5
-torch >= 1.2.0
+torch >= 1.4.0
 
 # HRCenterNet/datasets/HanDataset.py: 2
 # HRCenterNet/demo_dataset.ipynb: 4
 # HRCenterNet/evaluate.py: 4,5
 # HRCenterNet/test.py: 4,5
 # HRCenterNet/utils/utility.py: 4
-torchvision >= 0.4.0
+torchvision >= 0.5.0
 
 # HRCenterNet/.ipynb_checkpoints/train-checkpoint.py: 4
 # HRCenterNet/train.py: 4

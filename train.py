@@ -12,7 +12,7 @@ from models.HRCenterNet import HRCenterNet
 crop_size = 512
 output_size = 128
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print('device: ', device)
 
 def main(args):
@@ -32,37 +32,35 @@ def main(args):
     
     checkpoint = None
     if not (args.log_dir == None):
-        print("Load checkpoint from " + args.log_dir)
-        checkpoint = torch.load(args.log_dir, map_location='cpu')    
-
-    model = HRCenterNet()
+        checkpoint = torch.load(args.log_dir, map_location=device)    
     
     if not os.path.exists(args.weight_dir):
         os.makedirs(args.weight_dir)
     
-    train(args, dataloader, model, checkpoint)
+    train(args, dataloader, checkpoint)
     
-def train(args, dataloader, model, checkpoint=None):
+def train(args, dataloader, checkpoint=None):
     
     num_epochs = args.epoch
     loss_average = 0.
     best_iou = -1.
     metrics = dict()
     
+    model = HRCenterNet()
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     model = model.to(device)
-    optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=args.lr)
 
     if not (checkpoint == None):
+        print("Load checkpoint from " + args.log_dir)
         model.load_state_dict(checkpoint['model'])
         optimizer.load_state_dict(checkpoint['optimizer'])
         best_iou = checkpoint['best_iou']
 
     optimizer.zero_grad()
 
-    print('Start training...')
     for epoch in range(num_epochs):
         loss = 0.
-        model = model.train()
+        model.train()
 
         for batch_idx, sample in enumerate(dataloader['train']):
             inputs = sample['image'].to(device, dtype=torch.float)
@@ -72,19 +70,20 @@ def train(args, dataloader, model, checkpoint=None):
 
             loss = calc_loss(outputs, labels, metrics)
 
-            loss_average = loss_average + loss
+            loss_average = loss_average + metrics['loss']
             sys.stdout.write('\r')
-            sys.stdout.write('Epoch [%3d/%3d] Iter[%3d/%3d]  Loss: %.4f heatmap_loss: %.5f size_loss: %.5f offset_loss: %.5f'
+            sys.stdout.write('Training: Epoch[%3d/%3d] Iter[%3d/%3d] Loss: %.5f heatmap_loss: %.4f size_loss: %.4f offset_loss: %.4f'
             %(epoch+1, num_epochs, batch_idx, (len(dataloader['train'].dataset)//(args.batch_size))+1, 
-              loss.item(), metrics['heatmap'], metrics['size'], metrics['offset']))
+                metrics['loss'], metrics['heatmap'], metrics['size'], metrics['offset']))
             sys.stdout.write(' average loss: %.5f'%(loss_average / (((len(dataloader['train'].dataset)//(args.batch_size))+1)*epoch + (batch_idx + 1))))
             sys.stdout.flush()
-
+            
             loss.backward()
 
             optimizer.step()
             optimizer.zero_grad()
     
+        print()
         avg_iou = evaluate(dataloader, model)
         print('Average IoU: ', avg_iou)
         if avg_iou > best_iou:
@@ -92,27 +91,25 @@ def train(args, dataloader, model, checkpoint=None):
             best_iou = avg_iou
             print('Saving model to', args.weight_dir, 'best.pth.tar')
             torch.save({'best_iou': best_iou, 
-                        'model': model.state_dict(),
-                        'optimizer': optimizer.state_dict()},
+                        'optimizer': optimizer.state_dict(),
+                        'model': model.state_dict()},
                         args.weight_dir + 'best.pth.tar')
             
         if (epoch % args.save_epoch) == 0:
             print('Saving model to', args.weight_dir, str(epoch), '.pth.tar')
             torch.save({'best_iou': best_iou, 
-                        'model': model.state_dict(),
-                        'optimizer': optimizer.state_dict()},
+                        'optimizer': optimizer.state_dict(),
+                        'model': model.state_dict()},
                         args.weight_dir + str(epoch) +'.pth.tar')
         
                     
 
 def evaluate(dataloader, model):
     
-    print('\nEvaluation...')
-    
     iou_sum = 0.
     model.eval()
     
-    for batch_idx, sample in enumerate(tqdm(dataloader['val'])):
+    for batch_idx, sample in enumerate(tqdm(dataloader['val'], ascii=True, desc='Evaluation')):
         with torch.no_grad():
             inputs = sample['image'].to(device, dtype=torch.float)
             labels = sample['labels'].to(device, dtype=torch.float)

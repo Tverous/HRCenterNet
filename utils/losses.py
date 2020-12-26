@@ -11,10 +11,10 @@ def calc_loss(pred, gt, metrics):
     
     all_loss = (-1 * _heatmap_loss + 10. * _size_loss + 5. * _offset_loss) / N
     
-    metrics['loss'] = all_loss.data.cpu().numpy() 
-    metrics['heatmap'] = (-1 *  _heatmap_loss / N).data.cpu().numpy()
-    metrics['size'] = (10. * _size_loss / N).data.cpu().numpy()
-    metrics['offset'] = (5. * _offset_loss / N).data.cpu().numpy()
+    metrics['loss'] = all_loss.item() 
+    metrics['heatmap'] = (-1 *  _heatmap_loss / N).item()
+    metrics['size'] = (10. * _size_loss / N).item()
+    metrics['offset'] = (5. * _offset_loss / N).item()
     
     return all_loss
 
