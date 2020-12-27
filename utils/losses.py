@@ -5,6 +5,9 @@ def calc_loss(pred, gt, metrics):
     mask = torch.sign(gt[..., 1])
     N = torch.sum(mask)
     
+    if N == 0:
+        N = 1
+        
     _heatmap_loss = heatmap_loss(pred, gt, mask, metrics)
     _size_loss = size_loss(pred, gt, mask, metrics)
     _offset_loss = offset_loss(pred, gt, mask, metrics) 
