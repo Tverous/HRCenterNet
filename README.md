@@ -5,6 +5,7 @@ Chinese Character Detection in Historical Documents
 >[HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents](https://arxiv.org/abs/2012.05739) \
 >Chia-Wei Tang, [Chao-Lin Liu](https://www.cs.nccu.edu.tw/~chaolin/), Po-Sen Chu \
 >[IEEE Big Data 2020 Workshops, Computational Archival Science: digital records in the age of big data](https://ai-collaboratory.net/cas/cas-workshops/ieee-big-data-2020-5th-cas-workshop/) \
+> *IEEE Xplore ([10.1109/BigData50022.2020.9378051](https://ieeexplore.ieee.org/document/9378051/metrics#metrics))* \
 > *arXiv technical report ([arXiv 2012.05739](https://arxiv.org/abs/2012.05739))*
 
 Contact: [106703054@g.nccu.edu.tw](mailto:106703054@g.nccu.edu.tw). Any questions or discussions are welcomed! 
@@ -62,12 +63,15 @@ file_name_2           obj_id_1 topleft_x topleft_y width height obj_id_2 topleft
 ## Citation
 Use this bibtex to cite this repository:
 ```bibtex
-@misc{tang2020hrcenternet,
-      title={HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents}, 
-      author={Chia-Wei Tang and Chao-Lin Liu and Po-Sen Chiu},
-      year={2020},
-      eprint={2012.05739},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@INPROCEEDINGS{
+  9378051,  
+  author={C. -W. {Tang} and C. -L. {Liu} and P. -S. {Chiu}},  
+  booktitle={2020 IEEE International Conference on Big Data (Big Data)},   
+  title={HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents},   
+  year={2020},  
+  volume={},  
+  number={},  
+  pages={1924-1930},  
+  doi={10.1109/BigData50022.2020.9378051}
 }
 ```
