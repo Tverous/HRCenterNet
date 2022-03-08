@@ -16,17 +16,28 @@ git clone https://github.com/Tverous/HRCenterNet.git
 cd HRCenterNet/
 pip install -r requirements.txt
 ```
-## Download pretrained weight
 
-[Google Drive - HRCenterNet.pth.tar](https://drive.google.com/file/d/1pWOZ0M5suplCZeFBJK0SvC34IUtEkOpI/view?usp=sharing)
+## Download the dataset and the pretrained weight
 
-## Download Dataset
+### Google Drive
 
-[Google Drive - train.csv](https://drive.google.com/file/d/1wRRDhILEBfOO3CKT32M0AXUp4iINdRbF/view?usp=sharing)
+- [train.csv](https://drive.google.com/file/d/1wRRDhILEBfOO3CKT32M0AXUp4iINdRbF/view?usp=sharing)
 
-[Google Drive - val.csv](https://drive.google.com/file/d/1W2DgwUFlrUjJiWCGXiBk7pnJk8rZwmbQ/view?usp=sharing)
+- [val.csv](https://drive.google.com/file/d/1W2DgwUFlrUjJiWCGXiBk7pnJk8rZwmbQ/view?usp=sharing)
 
-[Google Drive - dataset_images.zip](https://drive.google.com/file/d/1syj7Osi0ACqbuuhkoZsuOWXW7Gtjov05/view?usp=sharing)
+- [dataset_images.zip](https://drive.google.com/file/d/1syj7Osi0ACqbuuhkoZsuOWXW7Gtjov05/view?usp=sharing)
+
+- [HRCenterNet.pth.tar](https://drive.google.com/file/d/1pWOZ0M5suplCZeFBJK0SvC34IUtEkOpI/view?usp=sharing)
+
+### OneDrive
+
+- [train.csv](https://1drv.ms/u/s!Aiktfq4vkVE6godo4U135rwRNwG5WA?e=lhvEox)
+
+- [val.csv](https://1drv.ms/u/s!Aiktfq4vkVE6godntw-UrrPt8M2wWw?e=DXuqzZ)
+
+- [dataset_images.zip](https://1drv.ms/u/s!Aiktfq4vkVE6godrkvPEWr8xKFLVNA?e=T1ieS9)
+
+- [HRCenterNet.pth.tar](https://1drv.ms/u/s!Aiktfq4vkVE6godpDqzJb5-DsbEEAg?e=wqQDz2)
 
 ## How to use ?
 ### Training:
